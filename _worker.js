@@ -15,7 +15,7 @@ const proxyIPs= ['ni.radically.pro'];// OR USE ['cdn.xn--b6gac.eu.org', 'cdn-all
 
 let proxyIP = proxyIPs[Math.floor(Math.random() * proxyIPs.length)];
 
-let dohURL = 'https://dns.kernel-error.de/dns-query';
+let dohURL = 'https://dns.adguard-dns.com/dns-query';
 
 let panelVersion = '2.3.4';
 
@@ -1165,7 +1165,7 @@ const updateDataset = async (env, Settings) => {
 
     const vlessConfig = Settings?.get('outProxy');
     const proxySettings = {
-        remoteDNS: Settings?.get('remoteDNS') || 'https://dns.kernel-error.de/dns-query',
+        remoteDNS: Settings?.get('remoteDNS') || 'https://94.140.14.14/dns-query',
         localDNS: Settings?.get('localDNS') || '8.8.8.8',
         lengthMin: Settings?.get('fragmentLengthMin') || '100',
         lengthMax: Settings?.get('fragmentLengthMax') || '200',
@@ -2085,7 +2085,7 @@ const renderLoginPage = async () => {
     </head>
     <body>
         <div class="container">
-            <h2>🔰 BPB Panel<span style="font-size: smaller;">${panelVersion}</span>🔰</h2>
+            <h2>🔰 BPB Panel<span style="font-size: smaller;">${panelVersion}</span></h2>
             <div class="form-container">
                 <h2>User Login</h2>
                 <form id="loginForm">
