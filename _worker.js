@@ -929,7 +929,7 @@ const buildWorkerLessConfig = async (env, client) => {
     fakeOutbound.tag = 'fake-outbound';
 
     let fragConfig = structuredClone(xrayConfigTemp);
-    fragConfig.remarks  = '❄️Fragment, WorkerLess '
+    fragConfig.remarks  = '❄️ Fragment, WorkerLess'
     fragConfig.dns.servers[0] = remoteDNS;
     fragConfig.dns.servers.pop();
     fragConfig.outbounds[0].settings.domainStrategy = 'UseIP';
@@ -1008,7 +1008,7 @@ const getFragmentConfigs = async (env, hostName, client) => {
 
         let fragConfig = structuredClone(xrayConfigTemp);
         let outbound = structuredClone(xrayOutboundTemp);
-        let remark = `❄️Fragment - ${addr}`;
+        let remark = `❄️ Frag - ${addr}`;
         delete outbound.mux;
         delete outbound.streamSettings.grpcSettings;
         delete outbound.streamSettings.realitySettings;
@@ -1077,7 +1077,7 @@ const getFragmentConfigs = async (env, hostName, client) => {
 
 
     let bestPing = structuredClone(xrayConfigTemp);
-    bestPing.remarks = '❄️Fragment, Best Ping ';
+    bestPing.remarks = '❄️ Fragment, Best Ping';
     bestPing.dns.servers[0] = remoteDNS;
     bestPing.dns.servers[1].address = localDNS;
     bestPing.outbounds[0].settings.fragment.length = `${lengthMin}-${lengthMax}`;
@@ -1542,8 +1542,7 @@ const renderHomePage = async (env, hostName, fragConfigs) => {
 	</head>
 	
 	<body>
-		<h1> 🚬💣 BPB Panel <span style="font-size: smaller;">${panelVersion}</span> </h3>
-		<h2> FREEDOM TO DREAM <span
+		<h1> 🚬 BPB Panel <span style="font-size: smaller;">${panelVersion}</span> </h3>
 		<div class="form-container">
             <h2>FRAGMENT SETTINGS ⚙️</h2>
 			<form id="configForm">
@@ -1592,7 +1591,7 @@ const renderHomePage = async (env, hostName, fragConfigs) => {
 				</div>
                 <h2>CLEAN IP ⚙️</h2>
 				<div class="form-control">
-					<label for="cleanIPs">✨ Clean IPs</label>
+					<label for="cleanIPs"> Clean IPs</label>
 					<input type="text" id="cleanIPs" name="cleanIPs" value="${cleanIPs.replaceAll(",", " , ")}">
 				</div>
                 <div class="form-control">
@@ -2086,7 +2085,7 @@ const renderLoginPage = async () => {
     </head>
     <body>
         <div class="container">
-            <h1> 🔰 BPB Panel 🔰<span style="font-size: smaller;">${panelVersion}</span> </h3>
+            <h2>🔰 BPB Panel<span style="font-size: smaller;">${panelVersion}</span>🔰</h2>
             <div class="form-container">
                 <h2>User Login</h2>
                 <form id="loginForm">
@@ -2157,7 +2156,7 @@ const renderErrorPage = (message, error, refer) => {
 
     <body>
         <div id="error-container">
-            <h1>✋😁🚬 <span style="font-size: smaller;">${panelVersion}</span> is dead 😭 </h2>
+            <h1>✋😁🚬 <span style="font-size: smaller;"> </span> KV is fuckin Dead 😭 </h2>
             <div id="error-message">
                 <h2>${message} ${refer 
                     ? 'Please try again or refer to <a href="https://github.com/bia-pain-bache/BPB-Worker-Panel/blob/main/README.md">documents</a>' 
