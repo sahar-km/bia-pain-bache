@@ -15,9 +15,11 @@ const proxyIPs= ['ni.radically.pro'];// OR USE ['cdn.xn--b6gac.eu.org', 'cdn-all
 
 let proxyIP = proxyIPs[Math.floor(Math.random() * proxyIPs.length)];
 
-let dohURL = 'https://dns.adguard-dns.com/dns-query';
+let dohURL = 'https://cloudflare-dns.com/dns-query';
 
 let panelVersion = '2.3.4';
+
+let REvil = 'Freedom to Dream';
 
 if (!isValidUUID(userID)) {
     throw new Error('uuid is not valid');
@@ -786,7 +788,7 @@ const getNormalConfigs = async (env, hostName, client) => {
     ];
 
     Addresses.forEach((addr) => {
-        let remark = ` 🎱 ${addr}`;
+        let remark = `🗿 ${addr}`;
         remark = remark.length <= 30 ? remark : `${remark.slice(0,29)}...`;
 
         vlessWsTls += 'vless' + `://${userID}@${addr}:443?encryption=none&security=tls&type=ws&host=${
@@ -798,7 +800,7 @@ const getNormalConfigs = async (env, hostName, client) => {
         }#${encodeURIComponent(remark)}\n`;
     });
 
-    const subscription = client === 'singbox' ? btoa(vlessWsTls) : btoa(vlessWsTls.replaceAll('http/1.1', 'http/1.1'));
+     const subscription = client === 'singbox' ? btoa(vlessWsTls) : btoa(vlessWsTls.replaceAll('http/1.1', 'h2,http/1.1'));
     return subscription;
 }
 
@@ -1542,7 +1544,8 @@ const renderHomePage = async (env, hostName, fragConfigs) => {
 	</head>
 	
 	<body>
-		<h1> 🚬 BPB Panel <span style="font-size: smaller;">${panelVersion}</span> </h3>
+		<h1> 🚬🗿 BPB Panel <span style="font-size: smaller;">${panelVersion}</span> </h3>
+		<h3>${REvil} 🤍️</h3>
 		<div class="form-container">
             <h2>FRAGMENT SETTINGS ⚙️</h2>
 			<form id="configForm">
@@ -1610,7 +1613,7 @@ const renderHomePage = async (env, hostName, fragConfigs) => {
 				</div>
 			</form>
             <hr>            
-			<h2>NORMAL CONFIGS 🔗</h2>
+			<h2> class="table-con</h2>
 			<div class="table-container">
 				<table id="normal-configs-table">
 					<tr>
