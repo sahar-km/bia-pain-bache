@@ -70,7 +70,7 @@ export async function resetPassword(request, env) {
     const newPwd = await request.text();
     if (newPwd === oldPwd) return new Response('Please enter a new Password!', { status: 400 });
     await env.kv.put('pwd', newPwd);
-    return new Response('Success', {
+    return new Response('WELCOME', {
         status: 200,
         headers: {
             'Set-Cookie': 'jwtToken=; Path=/; Secure; SameSite=None; Expires=Thu, 01 Jan 1970 00:00:00 GMT',
