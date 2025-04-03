@@ -38,8 +38,8 @@ async function buildClashDNS (proxySettings, isChain, isWarp) {
         "respect-rules": true,
         "use-system-hosts": false,
         "nameserver": isWarp 
-            ? warpRemoteDNS.map(dns => `${dns}#✅ Selector`) 
-            : [isChain ? `${remoteDNS}#proxy-1` : `${remoteDNS}#✅ Selector`],
+            ? warpRemoteDNS.map(dns => `${dns}#⚫ SELECTOR`) 
+            : [isChain ? `${remoteDNS}#proxy-1` : `${remoteDNS}#⚫ SELECTOR`],
         "proxy-server-nameserver": [finalLocalDNS],
         "nameserver-policy": {
             "raw.githubusercontent.com": finalLocalDNS,
@@ -67,7 +67,7 @@ async function buildClashDNS (proxySettings, isChain, isWarp) {
 
     const dohHost = getDomain(remoteDNS);
     if (dohHost.isHostDomain && !isWarp) {
-        dns["default-nameserver"] = [`https://8.8.8.8/dns-query#${isChain ? 'proxy-1' : '✅ Selector'}`];
+        dns["default-nameserver"] = [`https://8.8.8.8/dns-query#${isChain ? 'proxy-1' : '⚫ SELECTOR'}`];
     }
 
     if (isFakeDNS) Object.assign(dns, {
@@ -246,7 +246,7 @@ function buildClashRoutingRules (proxySettings) {
     blockUDP443 && rules.push("AND,((NETWORK,udp),(DST-PORT,443)),REJECT");
     rules.push("OR,((IP-CIDR,10.10.34.34/32),(IP-CIDR,10.10.34.35/32),(IP-CIDR,10.10.34.36/32)),REJECT");
     rules = [...rules, ...blockDomainRules, ...blockIPRules, ...directDomainRules, ...directIPRules];
-    rules.push("MATCH,✅ Selector");
+    rules.push("MATCH,⚫ SELECTOR");
     return { rules, ruleProviders };
 }
 
@@ -361,7 +361,7 @@ function buildClashChainOutbound(chainProxyParams) {
 
     const { server, port, uuid, flow, security, type, sni, fp, alpn, pbk, sid, headerType, host, path, serviceName } = chainProxyParams;
     const chainOutbound = {
-        "name": "💦 Chain Best Ping 💥",
+        "name": "🔴 chain best-ping",
         "type": atob('dmxlc3M='),
         "server": server,
         "port": +port,
@@ -369,7 +369,7 @@ function buildClashChainOutbound(chainProxyParams) {
         "uuid": uuid,
         "flow": flow,
         "network": type,
-        "dialer-proxy": "💦 Best Ping 💥"
+        "dialer-proxy": "🔴 best-ping"
     };
 
     if (security === 'tls') {
@@ -434,17 +434,17 @@ export async function getClashWarpConfig(request, env, isPro) {
     config['rule-providers'] = ruleProviders;
     const selector = config['proxy-groups'][0];
     const warpUrlTest = config['proxy-groups'][1];
-    selector.proxies = [`💦 Warp ${isPro? 'Pro ' : ''}- Best Ping 🚀`, `💦 WoW ${isPro? 'Pro ' : ''}- Best Ping 🚀`];
-    warpUrlTest.name = `💦 Warp ${isPro? 'Pro ' : ''}- Best Ping 🚀`;
+    selector.proxies = [`⚪ Warp ${isPro? 'Pro ' : ''}- best-ping`, `🟡 WoW ${isPro? 'Pro ' : ''}- best-ping`];
+    warpUrlTest.name = `⚪ Warp ${isPro? 'Pro ' : ''}- best-ping`;
     warpUrlTest.interval = +proxySettings.bestWarpInterval;
     config['proxy-groups'].push(structuredClone(warpUrlTest));
     const WoWUrlTest = config['proxy-groups'][2];
-    WoWUrlTest.name = `💦 WoW ${isPro? 'Pro ' : ''}- Best Ping 🚀`;
+    WoWUrlTest.name = `🟡 WoW ${isPro? 'Pro ' : ''}- best-ping`;
     let warpRemarks = [], WoWRemarks = [];
     
     warpEndpoints.split(',').forEach( (endpoint, index) => {
-        const warpRemark = `💦 ${index + 1} - Warp ${isPro? 'Pro ' : ''}🇮🇷`;
-        const WoWRemark = `💦 ${index + 1} - WoW ${isPro? 'Pro ' : ''}🌍`;
+        const warpRemark = `⚪ ${index + 1} - Warp ${isPro? 'Pro ' : ''}`;
+        const WoWRemark = `🟡 ${index + 1} - WoW ${isPro? 'Pro ' : ''}`;
         const warpOutbound = buildClashWarpOutbound(proxySettings, warpConfigs, warpRemark, endpoint, '', isPro);
         const WoWOutbound = buildClashWarpOutbound(proxySettings, warpConfigs, WoWRemark, endpoint, warpRemark);
         config.proxies.push(WoWOutbound, warpOutbound);
@@ -455,7 +455,7 @@ export async function getClashWarpConfig(request, env, isPro) {
     });
     
     selector.proxies.push(...warpRemarks, ...WoWRemarks);
-    return new Response(JSON.stringify(config, null, 4), { 
+    return new Response(JSON.stringify(config, null, 2), { 
         status: 200,
         headers: {
             'Content-Type': 'text/plain;charset=utf-8',
@@ -506,8 +506,8 @@ export async function getClashNormalConfig (request, env) {
     config['rule-providers'] = ruleProviders;
     const selector = config['proxy-groups'][0];
     const urlTest = config['proxy-groups'][1];
-    selector.proxies = ['💦 Best Ping 💥'];
-    urlTest.name = '💦 Best Ping 💥';
+    selector.proxies = ['🔴 best-ping'];
+    urlTest.name = '🔴 best-ping';
     urlTest.interval = +bestVLTRInterval;
     const Addresses = await getConfigAddresses(cleanIPs, enableIPv6);
     const customCdnAddresses = customCdnAddrs ? customCdnAddrs.split(',') : [];
@@ -524,7 +524,7 @@ export async function getClashNormalConfig (request, env) {
             totalAddresses.forEach( addr => {
                 let VLOutbound, TROutbound;
                 const isCustomAddr = customCdnAddresses.includes(addr);
-                const configType = isCustomAddr ? 'C' : '';
+                const configType = isCustomAddr ? 'CS' : '';
                 const sni = isCustomAddr ? customCdnSni : randomUpperCase(hostName);
                 const host = isCustomAddr ? customCdnHost : hostName;
                 const remark = generateRemark(protocolIndex, port, addr, cleanIPs, protocol, configType).replace(' : ', ' - ');
@@ -574,7 +574,7 @@ export async function getClashNormalConfig (request, env) {
         });
     });
 
-    return new Response(JSON.stringify(config, null, 4), { 
+    return new Response(JSON.stringify(config, null, 2), { 
         status: 200,
         headers: {
             'Content-Type': 'text/plain;charset=utf-8',
@@ -587,15 +587,15 @@ export async function getClashNormalConfig (request, env) {
 const clashConfigTemp = {
     "mixed-port": 7890,
     "ipv6": true,
-    "allow-lan": true,
+    "allow-lan": false,
     "mode": "rule",
-    "log-level": "warning",
+    "log-level": "info",
     "disable-keep-alive": false,
-    "keep-alive-idle": 10,
-    "keep-alive-interval": 15,
+    "keep-alive-idle": 25,
+    "keep-alive-interval": 30,
     "unified-delay": false,
     "geo-auto-update": true,
-    "geo-update-interval": 168,
+    "geo-update-interval": 740,
     "external-controller": "127.0.0.1:9090",
     "external-ui-url": "https://github.com/MetaCubeX/metacubexd/archive/refs/heads/gh-pages.zip",
     "external-ui": "ui",
@@ -637,7 +637,7 @@ const clashConfigTemp = {
     "proxies": [],
     "proxy-groups": [
         {
-            "name": "✅ Selector",
+            "name": "⚫ SELECTOR",
             "type": "select",
             "proxies": []
         },
@@ -656,6 +656,6 @@ const clashConfigTemp = {
         "enable": true,
         "server": "time.apple.com",
         "port": 123,
-        "interval": 30
+        "interval": 50
     }
 };
